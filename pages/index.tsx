@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1); // Reset page when products change
