@@ -25,25 +25,25 @@ const Filters: React.FC<FiltersProps> = ({ onSearch, onFilter }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 p-4">
+    <div className="flex flex-col md:flex-row gap-4 p-4 bg-[#9CDBA6] rounded-lg shadow-lg">
       <input
         type="text"
         value={searchTerm}
         onChange={handleSearchChange}
         placeholder="Search products..."
-        className="p-2 border rounded"
+        className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#50B498] placeholder-gray-500"
       />
-      <select name="price" onChange={handleFilterChange} className="p-2 border rounded">
+      <select name="price" onChange={handleFilterChange} className="p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#50B498]">
         <option value="" hidden>Sort by price</option>
         <option value="asc">Low to High</option>
         <option value="desc">High to Low</option>
       </select>
-      <select name="rating" onChange={handleFilterChange} className="p-2 border rounded">
+      <select name="rating" onChange={handleFilterChange} className="p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#50B498]">
         <option value="" hidden>Sort by rating</option>
         <option value="asc">Low to High</option>
         <option value="desc">High to Low</option>
       </select>
-      <select name="availability" onChange={handleFilterChange} className="p-2 border rounded">
+      <select name="availability" onChange={handleFilterChange} className="p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#50B498]">
         <option value="" hidden>Sort by availability</option>
         <option value="inStock">In Stock</option>
         <option value="outOfStock">Out of Stock</option>
