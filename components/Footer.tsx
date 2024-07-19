@@ -4,7 +4,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-[#468585] text-white p-4 mt-8">
       <div className="container mx-auto text-center">
-        <p>&copy; {new Date().getFullYear()} E-Commerce. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Shoppers Hub. All rights reserved.</p>
       </div>
     </footer>
   );
