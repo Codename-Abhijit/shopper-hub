@@ -6,13 +6,14 @@ import ProductList from '../components/ProductList';
 import Filters from '../components/Filters';
 import Pagination from '../components/Pagination';
 import debounce from 'lodash.debounce';
-import { fetchProducts } from '@/store/slices/productSlice';
+import { fetchProducts, filterByCategory } from '../store/slices/productSlice';
+import { Product } from '@/types';
 
 const Home: NextPage = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { products, status, error } = useSelector((state: RootState) => state.products);
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const { products, categories } = useSelector((state: RootState) => state.products);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filtered, setFiltered] = useState<Product[]>(products); // Define filtered state
   const productsPerPage = 10;
 
   useEffect(() => {
@@ -20,44 +21,34 @@ const Home: NextPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setFilteredProducts(products);
+    setCurrentPage(1); // Reset page when products change
+    setFiltered(products); // Reset filtered products when products change
   }, [products]);
 
   const handleSearch = debounce((searchTerm: string) => {
-    if (searchTerm === '') {
-      setFilteredProducts(products);
-    } else {
-      setFilteredProducts(
-        products.filter((product) =>
-          product.title.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    }
+    const filtered = products.filter((product) =>
+      product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    dispatch(filterByCategory('All')); // Apply category filter to ensure it resets
+    setFiltered(filtered);
     setCurrentPage(1);
   }, 300);
 
   const handleFilter = (filterType: string, value: string | number) => {
     let filtered = [...products];
-    if (filterType === 'price') {
-      if (value === 'asc') {
-        filtered = filtered.sort((a, b) => a.price - b.price);
-      } else if (value === 'desc') {
-        filtered = filtered.sort((a, b) => b.price - a.price);
-      }
+    if (filterType === 'category') {
+      dispatch(filterByCategory(value as string));
+      filtered = filtered.filter((product) =>
+        (value === 'All' ? true : product.category === value)
+      );
+    } else if (filterType === 'price') {
+      filtered = filtered.sort((a, b) => value === 'asc' ? a.price - b.price : b.price - a.price);
     } else if (filterType === 'rating') {
-      if (value === 'asc') {
-        filtered = filtered.sort((a, b) => a.rating - b.rating);
-      } else if (value === 'desc') {
-        filtered = filtered.sort((a, b) => b.rating - a.rating);
-      }
+      filtered = filtered.sort((a, b) => value === 'asc' ? a.rating - b.rating : b.rating - a.rating);
     } else if (filterType === 'availability') {
-      if (value === 'inStock') {
-        filtered = filtered.filter((product) => product.stock > 0);
-      } else if (value === 'outOfStock') {
-        filtered = filtered.filter((product) => product.stock === 0);
-      }
+      filtered = filtered.filter((product) => value === 'inStock' ? product.stock > 0 : product.stock === 0);
     }
-    setFilteredProducts(filtered);
+    setFiltered(filtered);
     setCurrentPage(1);
   };
 
@@ -67,12 +58,12 @@ const Home: NextPage = () => {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const currentProducts = filtered.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(filtered.length / productsPerPage);
 
   return (
     <div>
-      <Filters onSearch={handleSearch} onFilter={handleFilter} />
+      <Filters categories={categories} onSearch={handleSearch} onFilter={handleFilter} />
       <ProductList products={currentProducts} />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </div>

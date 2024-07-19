@@ -24,17 +24,21 @@ interface Review {
 
 interface ProductsState {
   products: Product[];
+  filteredProducts: Product[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  categories: string[];
 }
 
 const initialState: ProductsState = {
   products: [],
+  filteredProducts: [],
   status: 'idle',
   error: null,
+  categories: [],
 };
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+export const fetchProducts = createAsyncThunk<Product[]>('products/fetchProducts', async () => {
   const response = await axios.get('https://dummyjson.com/products');
   return response.data.products;
 });
@@ -42,7 +46,17 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    filterByCategory(state, action) {
+      const category = action.payload;
+      state.filteredProducts = state.products.filter(product =>
+        category === 'All' ? true : product.category === category
+      );
+    },
+    setCategories(state, action) {
+      state.categories = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -51,12 +65,18 @@ const productsSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.products = action.payload;
+        state.filteredProducts = action.payload;
+
+        const categories = Array.from(new Set(action.payload.map(product => product.category)));
+        state.categories = ['All', ...categories];
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Something went wrong';
+        state.error = action.error.message ?? 'Something went wrong';
       });
   },
 });
+
+export const { filterByCategory, setCategories } = productsSlice.actions;
 
 export default productsSlice.reducer;

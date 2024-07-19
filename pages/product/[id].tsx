@@ -9,9 +9,7 @@ interface ProductPageProps {
 
 const ProductPage: NextPage<ProductPageProps> = ({ product }) => {
   return (
-    <div>
       <ProductDetails product={product} />
-    </div>
   );
 };
 

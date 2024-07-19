@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import debounce from 'lodash.debounce';
 
 interface FiltersProps {
+  categories: string[];
   onSearch: (searchTerm: string) => void;
   onFilter: (filterType: string, value: string | number) => void;
 }
 
-const Filters: React.FC<FiltersProps> = ({ onSearch, onFilter }) => {
+const Filters: React.FC<FiltersProps> = ({ categories, onSearch, onFilter }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   const handleSearch = debounce((term: string) => {
     onSearch(term);
@@ -24,6 +26,12 @@ const Filters: React.FC<FiltersProps> = ({ onSearch, onFilter }) => {
     onFilter(name, value);
   };
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const category = event.target.value;
+    setSelectedCategory(category);
+    onFilter('category', category);
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4 bg-[#9CDBA6] rounded-lg shadow-lg">
       <input
@@ -33,6 +41,11 @@ const Filters: React.FC<FiltersProps> = ({ onSearch, onFilter }) => {
         placeholder="Search products..."
         className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#50B498] placeholder-gray-500"
       />
+      <select name="category" value={selectedCategory} onChange={handleCategoryChange} className="p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#50B498]">
+        {categories.map((category, index) => (
+          <option key={index} value={category}>{category}</option>
+        ))}
+      </select>
       <select name="price" onChange={handleFilterChange} className="p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#50B498]">
         <option value="" hidden>Sort by price</option>
         <option value="asc">Low to High</option>
