@@ -39,7 +39,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       <div className="flex flex-col md:flex-row bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
         <div className="w-full md:w-1/2 relative h-96 mb-4 md:mb-0">
           <Image
-            src={product.images[0]} // Assuming the first image is the main one
+            src={product.images[0]}
             alt={product.title}
             layout="fill"
             objectFit="cover"
