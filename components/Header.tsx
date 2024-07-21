@@ -34,7 +34,7 @@ const Header: React.FC = () => {
           onClick={toggleTheme}
           className="bg-[#DEF9C4] dark:bg-gray-600 text-[#468585] dark:text-gray-200 p-2 rounded cursor-pointer"
         >
-          {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+          {theme === 'light' ? '🌑 Dark Mode' : '☀️ Light mode'}
         </button>
       </div>
     </header>
