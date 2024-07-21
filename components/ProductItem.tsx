@@ -25,7 +25,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
       } else if (i === filledStars && hasHalfStar) {
         stars.push(<span key={i} className="text-yellow-400">☆</span>); // Half star
       } else {
-        stars.push(<span key={i} className="text-gray-300">★</span>); // Empty star
+        stars.push(<span key={i} className="text-gray-300 dark:text-gray-600">★</span>); // Empty star
       }
     }
 
@@ -33,10 +33,10 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   };
 
   return (
-    <div className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105">
+    <div className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 dark:bg-gray-800 dark:border-gray-700">
       <button
         onClick={handleClick}
-        className="w-full h-48 relative bg-[#DEF9C4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#468585] overflow-hidden"
+        className="w-full h-48 relative bg-[#DEF9C4] dark:bg-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#468585] dark:focus:ring-[#DEF9C4] overflow-hidden"
       >
         <div className="relative w-full h-full transition-transform duration-300 transform hover:scale-110">
           <Image
@@ -50,11 +50,11 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
           />
         </div>
       </button>
-      <h3 className="mt-2 text-lg font-semibold text-[#468585]">{product.title}</h3>
-      <p className="mt-1 text-[#50B498]">{product.price} USD</p>
+      <h3 className="mt-2 text-lg font-semibold text-[#468585] dark:text-[#DEF9C4]">{product.title}</h3>
+      <p className="mt-1 text-[#50B498] dark:text-[#9CDBA6]">{product.price} USD</p>
       <div className="mt-2 flex items-center">
         <div className="text-lg flex">{renderStars(product.rating)}</div>
-        <span className="ml-2 text-sm text-gray-500">({product.rating.toFixed(1)})</span>
+        <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({product.rating.toFixed(1)})</span>
       </div>
     </div>
   );

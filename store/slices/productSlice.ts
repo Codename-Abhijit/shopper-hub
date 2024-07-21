@@ -72,7 +72,7 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message ?? 'Something went wrong';
+        state.error = action.error.message ?? 'No Response from API';
       });
   },
 });
