@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import debounce from 'lodash.debounce';
 
 interface FiltersProps {
   categories: string[];
@@ -11,14 +10,10 @@ const Filters: React.FC<FiltersProps> = ({ categories, onSearch, onFilter }) => 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const handleSearch = debounce((term: string) => {
-    onSearch(term);
-  }, 300);
-
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value;
     setSearchTerm(term);
-    handleSearch(term);
+    onSearch(term);
   };
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,8 +42,8 @@ const Filters: React.FC<FiltersProps> = ({ categories, onSearch, onFilter }) => 
         onChange={handleCategoryChange}
         className="p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#50B498] dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
       >
-        {categories.map((category, index) => (
-          <option key={index} value={category}>
+        {categories.map((category) => (
+          <option key={category} value={category}>
             {category}
           </option>
         ))}

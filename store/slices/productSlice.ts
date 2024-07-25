@@ -52,9 +52,6 @@ const productsSlice = createSlice({
       state.filteredProducts = state.products.filter(product =>
         category === 'All' ? true : product.category === category
       );
-    },
-    setCategories(state, action) {
-      state.categories = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -77,6 +74,6 @@ const productsSlice = createSlice({
   },
 });
 
-export const { filterByCategory, setCategories } = productsSlice.actions;
+export const { filterByCategory } = productsSlice.actions;
 
 export default productsSlice.reducer;
